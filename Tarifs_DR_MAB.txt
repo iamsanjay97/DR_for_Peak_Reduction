@@ -1,0 +1,73 @@
+################### Tariff-pattern for group-1 [BrooksideHomes, CentervilleHomes] ##################
+
+TariffSpecification spec = new TariffSpecification(brokerContext.getBroker(), PowerType.CONSUMPTION);
+double marketPrice = marketManager.getMeanMarketPrice() / 1000.0;
+benchmarkPrice = ((marketPrice + fixedPerKwh) * (1.0 + defaultMargin));
+Rate rate1 = new Rate().withValue(benchmarkPrice).withTierThreshold(0.0);
+Rate rate2 = new Rate().withValue(100*benchmarkPrice).withTierThreshold(20.0);
+
+spec.addRate(rate1);
+spec.addRate(rate2);
+
+addOwnTariff(spec);
+customerSubscriptions.put(spec, new LinkedHashMap<>());
+tariffRepo.addSpecification(spec);
+brokerContext.sendMessage(spec);
+
+
+
+################### Tariff-pattern for group-2 [DownTownOffices, EastsideOffices] ##################
+
+TariffSpecification spec = new TariffSpecification(brokerContext.getBroker(), PowerType.CONSUMPTION);
+double marketPrice = marketManager.getMeanMarketPrice() / 1000.0;
+benchmarkPrice = ((marketPrice + fixedPerKwh) * (1.0 + defaultMargin));
+Rate rate1 = new Rate().withValue(50*benchmarkPrice).withTierThreshold(0.0);
+Rate rate2 = new Rate().withValue(benchmarkPrice).withTierThreshold(20.0);
+Rate rate3 = new Rate().withValue(25*benchmarkPrice).withTierThreshold(10000.0);
+
+spec.addRate(rate1);
+spec.addRate(rate2);
+spec.addRate(rate3);
+
+addOwnTariff(spec);
+customerSubscriptions.put(spec, new LinkedHashMap<>());
+tariffRepo.addSpecification(spec);
+brokerContext.sendMessage(spec);
+
+
+
+########################## Tariff-pattern for group-3 [MedicalCenter-1] #############################
+
+TariffSpecification spec = new TariffSpecification(brokerContext.getBroker(), PowerType.CONSUMPTION);
+double marketPrice = marketManager.getMeanMarketPrice() / 1000.0;
+benchmarkPrice = ((marketPrice + fixedPerKwh) * (1.0 + defaultMargin));
+Rate rate1 = new Rate().withValue(25*benchmarkPrice).withTierThreshold(0.0);
+Rate rate2 = new Rate().withValue(benchmarkPrice).withTierThreshold(2000.0);
+
+spec.addRate(rate1);
+spec.addRate(rate2);
+
+addOwnTariff(spec);
+customerSubscriptions.put(spec, new LinkedHashMap<>());
+tariffRepo.addSpecification(spec);
+brokerContext.sendMessage(spec);
+
+
+
+########################## Tariff-pattern for group-4 [HextraChemical] #############################
+
+TariffSpecification spec = new TariffSpecification(brokerContext.getBroker(), PowerType.CONSUMPTION);
+double marketPrice = marketManager.getMeanMarketPrice() / 1000.0;
+benchmarkPrice = ((marketPrice + fixedPerKwh) * (1.0 + defaultMargin));
+Rate rate1 = new Rate().withValue(50*benchmarkPrice).withTierThreshold(0.0);
+Rate rate2 = new Rate().withValue(benchmarkPrice).withTierThreshold(200.0);
+Rate rate3 = new Rate().withValue(25*benchmarkPrice).withTierThreshold(30000.0);
+
+spec.addRate(rate1);
+spec.addRate(rate2);
+spec.addRate(rate3);
+
+addOwnTariff(spec);
+customerSubscriptions.put(spec, new LinkedHashMap<>());
+tariffRepo.addSpecification(spec);
+brokerContext.sendMessage(spec);
