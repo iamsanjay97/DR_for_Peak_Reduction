@@ -1,12 +1,15 @@
 package org.powertac.samplebroker.util;
 
+import java.net.Socket;
+import java.util.Arrays;
+import java.io.*;
+
 import java.util.Map;
 import java.util.List;
 import java.util.HashMap;
 import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
-import java.io.InputStream;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -23,9 +26,59 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.powertac.samplebroker.messages.DistributionInformation;
 
 public class JSON_API
 {
+	public static String communicateWithMatlab(int PORT, int nCustomers, double[] U, double[] UP, double[] lambda, double rate, double P) throws IOException
+	{
+		// prepare input data for Matlab optimization script
+
+		ArrayList<String> sentence = new ArrayList<>();
+		sentence.add(Integer.toString(nCustomers));
+		sentence.add(Arrays.toString(U));
+		sentence.add(Arrays.toString(UP));
+		sentence.add(Arrays.toString(lambda));
+		sentence.add(Double.toString(rate));
+		sentence.add(Double.toString(P));
+		byte [] data = Arrays.copyOf(sentence.toString().getBytes(), 512);
+        
+        //get the localhost IP address, if server is running on some other IP, you need to use that
+        Socket socket = null;
+		DataOutputStream dataOutputStream = null;
+
+        //establish socket connection to server
+
+        try {
+            socket = new Socket("localhost", PORT); // Connect to server on localhost
+        }
+        catch(Exception e) {e.printStackTrace();}
+
+        //write to socket using OutputStream
+        try
+        {
+			dataOutputStream = new DataOutputStream(socket.getOutputStream());
+			dataOutputStream.write(data);
+			dataOutputStream.flush();
+        } catch (IOException e) {e.printStackTrace();}
+
+        //read the server response message
+		StringBuilder jsonData = new StringBuilder();
+        try
+        {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            
+            String line;
+            while ((line = reader.readLine()) != null) {
+                jsonData.append(line);
+            }
+        } catch (IOException e) {e.printStackTrace();}
+        
+        //close resources
+        dataOutputStream.close();
+		return new String(jsonData);
+	}
+
 	public static String communicateWithPython(String link, JSONObject[] data)
 	{
 		String responseString = "";

@@ -26,6 +26,7 @@ import java.util.Random;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.core.tools.picocli.CommandLine.Help;
 import org.joda.time.Instant;
 import org.powertac.common.Broker;
 import org.powertac.common.Competition;
@@ -61,6 +62,7 @@ import org.powertac.samplebroker.messages.DistributionInformation;
 import org.powertac.samplebroker.messages.GameInformation;
 import org.powertac.samplebroker.messages.MarketTransactionInformation;
 import org.powertac.samplebroker.util.Helper;
+import org.powertac.samplebroker.util.JSON_API;
 import org.powertac.samplebroker.util.MABBasedDR;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -606,7 +608,7 @@ implements PortfolioManager, Initializable, Activatable
   @Override // from Activatable
   public synchronized void activate (int timeslotIndex)
   {
-    if (customerSubscriptions.size() == 0)
+    /*if (customerSubscriptions.size() == 0)
     {
       int[] discount = mabBasedDR.getEstimatedAllocation();
       createMABDRTariffs(discount);
@@ -637,11 +639,27 @@ implements PortfolioManager, Initializable, Activatable
       int[] discount = mabBasedDR.getEstimatedAllocation();
       createMABDRTariffs(discount);
       System.out.println(mabBasedDR.toString());
-    }
+    }*/
 
-    updateMarketShare(timeslotIndex);       // Update broker's market share (volume)
-
+    // updateMarketShare(timeslotIndex);       // Update broker's market share (volume)
     try
+    {
+      int nCustomers = 5;
+      double[] U = new double[] {1000, 1200, 1000, 1500, 900};
+      double[] UP = new double[] {400, 420, 350, 500, 300};
+      double[] l = new double[] {0.2, 0.05, 0.1, 0.15, 0.01};
+      double r = 2;
+      double P = 10;
+
+      String jsonData = JSON_API.communicateWithMatlab(9999, nCustomers, U, UP, l, r, P);
+      // Parse JSON data
+      ArrayList<Double> out = JSON_API.decodeJSON(jsonData);
+      for(Double i: out)
+        System.out.println(String.format("%.6f", i));
+    }
+    catch(Exception e) {e.printStackTrace();}
+
+    /*try
     {
       if(timeslotIndex != 360)
         storetoMongoDB(timeslotIndex, discount);
@@ -658,7 +676,7 @@ implements PortfolioManager, Initializable, Activatable
     }
 
     for (CustomerRecord record: notifyOnActivation)
-      record.activate();
+      record.activate();*/
   }
   
   public void updateMarketShare(Integer timeslot)
