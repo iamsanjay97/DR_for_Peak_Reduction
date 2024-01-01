@@ -608,7 +608,7 @@ implements PortfolioManager, Initializable, Activatable
   @Override // from Activatable
   public synchronized void activate (int timeslotIndex)
   {
-    /*if (customerSubscriptions.size() == 0)
+    if (customerSubscriptions.size() == 0)
     {
       int[] discount = mabBasedDR.getEstimatedAllocation();
       createMABDRTariffs(discount);
@@ -639,7 +639,7 @@ implements PortfolioManager, Initializable, Activatable
       int[] discount = mabBasedDR.getEstimatedAllocation();
       createMABDRTariffs(discount);
       System.out.println(mabBasedDR.toString());
-    }*/
+    }
 
     // updateMarketShare(timeslotIndex);       // Update broker's market share (volume)
     try
@@ -659,7 +659,7 @@ implements PortfolioManager, Initializable, Activatable
     }
     catch(Exception e) {e.printStackTrace();}
 
-    /*try
+    try
     {
       if(timeslotIndex != 360)
         storetoMongoDB(timeslotIndex, discount);
@@ -676,7 +676,7 @@ implements PortfolioManager, Initializable, Activatable
     }
 
     for (CustomerRecord record: notifyOnActivation)
-      record.activate();*/
+      record.activate();
   }
   
   public void updateMarketShare(Integer timeslot)
@@ -893,7 +893,7 @@ implements PortfolioManager, Initializable, Activatable
     brokerContext.sendMessage(spec4);
   }
 
-  public double[] checkSuccess(Integer currentTimeslot)
+  public double[] checkSuccess(Integer currentTimeslot)   // to see how much reduction has happended
   {
     Map<String, Map<Integer, Double>> peakData = mabBasedDR.getPeakData();
 

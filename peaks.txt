@@ -1,0 +1,13 @@
+Name                Peak1           Peak2
+BrooksideHomes      3 to 7         14 to 18
+CentervilleHomes    16 to 22
+Downtownoffices     9 to 5
+EastsideOffices     9 to 5
+HextraChemical      3 to 7         14 to 18
+MedicalCenter-1     7 to 18
+
+
+
+Improvements over IJCAI work
+    - This time peaks are group of hours unlike single hours as in IJCAI, this setting is much more realistic
+    and give freedom to consider more than two peaks. 
